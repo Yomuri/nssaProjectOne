@@ -12,7 +12,13 @@ spawn_processes() {
 }
 
 collect_system_metrics() {
-	echo placeholder
+	if [ ! -e "output.txt" ];then
+		$(touch output.txt)
+	fi
+	writes=$(iostat | grep "sda" | tr -s ' ' | cut -d ' ' -f 4)
+	util=$(df / | tr -s ' ' | grep '/dev' | cut -d ' ' -f 4)
+	echo $writes,$util >> "system_metrics.csv"
+	
 }
 
 collect_process_metrics() {
